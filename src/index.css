@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --color-wood-dark:  #120a04;
+  --color-wood-mid:   #1e1008;
+  --color-wood-light: #2e1a0c;
+  --color-wood-edge:  #3d2310;
+  --color-felt:       #0c3520;
+  --color-felt-hi:    #145232;
+  --color-gold:       #c8922a;
+  --color-gold-light: #e0b84a;
+  --color-gold-dim:   #8a6118;
+  --color-cream:      #f4edd8;
+  --color-card-red:   #c0182a;
+  --color-card-back:  #8b1215;
+  --color-text-felt:  #d6c9a8;
+  --color-text-muted: #8a7d5e;
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background-color: #120a04;
+    color: #d6c9a8;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      repeating-linear-gradient(92deg, transparent 0px, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px),
+      repeating-linear-gradient(180deg, transparent 0px, transparent 40px, rgba(0,0,0,0.08) 40px, rgba(0,0,0,0.08) 42px);
+  }
+  #root { position: relative; z-index: 1; }
+}
+
+/* ── 3D DICE ── */
+.face {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  background: #f4edd8;
+  border: 3px solid #c8922a;
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.face-front  { transform: rotateY(0deg)   translateZ(45px); }
+.face-back   { transform: rotateY(180deg) translateZ(45px); }
+.face-right  { transform: rotateY(90deg)  translateZ(45px); }
+.face-left   { transform: rotateY(-90deg) translateZ(45px); }
+.face-top    { transform: rotateX(90deg)  translateZ(45px); }
+.face-bottom { transform: rotateX(-90deg) translateZ(45px); }
+
+/* dice rotation now handled by Framer Motion (rotateX / rotateY motion values) */
+
+/* ── CARD FLIP ── */
+.card-inner {
+  transition: transform 0.65s cubic-bezier(.4,0,.2,1);
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.card-group:hover .card-inner { transform: rotateY(180deg); }
+.card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+}
+.card-front-face { transform: rotateY(180deg); }
+
+/* ── BACK PATTERN ── */
+.back-diamond {
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.045) 0px, rgba(255,255,255,.045) 1px, transparent 1px, transparent 12px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,.045) 0px, rgba(255,255,255,.045) 1px, transparent 1px, transparent 12px);
+}
+
+/* ── FELT TEXTURE ── */
+.felt-weave {
+  background-image:
+    radial-gradient(ellipse at 50% 0%, #145232 0%, #0c3520 50%, #091e12 100%),
+    repeating-linear-gradient(45deg, transparent 0, transparent 2px, rgba(0,0,0,.04) 2px, rgba(0,0,0,.04) 4px);
+}
